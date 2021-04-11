@@ -1,0 +1,70 @@
+# Default values for stackdriver-exporter.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+replicaCount: 1
+image:
+  repository: frodenas/stackdriver-exporter
+  pullPolicy: IfNotPresent
+  # Overrides the image tag whose default is the chart appVersion.
+  tag: 0.10.0
+imagePullSecrets: []
+nameOverride: ""
+fullnameOverride: ""
+serviceAccount:
+  # Specifies whether a service account should be created
+  create: false
+  # Annotations to add to the service account
+  # The name of the service account to use.
+  # If not set and create is true, a name is generated using the fullname template
+  name: monitoring-service-account
+podAnnotations: {}
+podSecurityContext: {}
+# fsGroup: 2000
+
+securityContext: {}
+# capabilities:
+#   drop:
+#   - ALL
+# readOnlyRootFilesystem: true
+# runAsNonRoot: true
+# runAsUser: 1000
+namespace: operators
+service:
+  type: ClusterIP
+  port: 9255
+ingress:
+  enabled: false
+  annotations: {}
+  # kubernetes.io/ingress.class: nginx
+  # kubernetes.io/tls-acme: "true"
+  hosts:
+    - host: chart-example.local
+      paths: []
+  tls: []
+  #  - secretName: chart-example-tls
+  #    hosts:
+  #      - chart-example.local
+resources:
+  limits:
+    cpu: 4
+    memory: 600Mi
+  requests:
+    cpu: 500m
+    memory: 600Mi
+nodeSelector: {}
+project_id:
+tolerations: []
+log_level: debug
+affinity: {}
+stackdriverScrape: 300s
+stackdriverOffset: 0s
+metrics: []
+prometheus:
+  serviceMonitor:
+    prometheusServiceMonitorLabel: stackdriver
+    enabled: true
+    scrapeTimeout: 60s
+    honorTimestamps: false
+    honorLabels: false
+    interval: 60s
